@@ -9,8 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(express.json());
-app.use(cors({origin: "*"}));
-app.use(pino());
+app.use(cors({origin: '*'}));
 
 
 app.use(
@@ -30,7 +29,7 @@ app.use(
 );
 
 app.get('/notes', (req, res) => {
-  res.status(200).json({message: "Retrieved all notes"});
+  res.status(200).json({message: 'Retrieved all notes'});
 });
 
 app.get('/notes/:noteId', (req, res) => {
@@ -43,7 +42,7 @@ app.get('/test-error', () => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).json({ message: 'Route not found' });
 });
 
 app.use((err, req, res, next) => {
@@ -58,6 +57,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log((`Server is running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
