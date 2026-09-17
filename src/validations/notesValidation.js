@@ -40,12 +40,12 @@ export const noteIdSchema = {
 export const updateNoteSchema = {
  [Segments.PARAMS]: Joi.object({
     noteId: Joi.string().custom(objectIdValidator).required().messages({
-      'any invalid': 'Invalid noteId format',
+      'any.invalid': 'Invalid noteId format',
     }),
   }),
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1),
-    content: Joi.string(). allow(''),
+    content: Joi.string().allow(''),
     tag: Joi.string().valid(...TAGS),
   }).min(1).messages({
     'object.min': 'At least one field ("title", "content" or "tag") must be provided for update',
