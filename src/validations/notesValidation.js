@@ -31,7 +31,7 @@ export const createNoteSchema = {
 export const noteIdSchema = {
   [Segments.PARAMS]: Joi.object({
     noteId: Joi.string().custom(objectIdValidator).required().messages({
-      'any invalid': 'Invalid noteId format',
+      'any.invalid': 'Invalid noteId format',
     }),
   }),
 };
