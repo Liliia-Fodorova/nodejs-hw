@@ -2,8 +2,10 @@ import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from "mongoose";
 import { TAGS } from "../constants/tags.js";
 
+
+
 const objectIdValidator = (value, helpers) => {
-  return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
+  return !isValidObjectId(value) ? helpers.messages('Invalid noteId format') : value;
 };
 
 export const getAllNotesSchema = {
@@ -32,10 +34,14 @@ export const createNoteSchema = {
 
 
 export const updateNoteSchema = {
- ...noteIdSchema,
+ [Segments.PARAMS]: Joi.object({
+    noteId: Joi.string().custom(objectIdValidator).required(),
+  }),
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1),
     content: Joi.string(). allow(''),
     tag: Joi.string().valid(...TAGS),
-  }).min(1),
+  }).min(1).messages({
+    'object.min': 'Додайте перевірку, що хоча б одне з полів "title", "content" або "tag" буде присутнім',
+  }),
 };
