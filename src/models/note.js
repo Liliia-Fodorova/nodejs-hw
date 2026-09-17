@@ -17,7 +17,7 @@ const noteSchema = new Schema({
     type: String,
     required: false,
     default: "Todo",
-    enum: TAGS,
+    enum: [...TAGS],
   }
 },
 {
@@ -26,5 +26,5 @@ const noteSchema = new Schema({
 }
 );
 noteSchema.index({ tag: 1 });
-export const Note = model('note', noteSchema);
+export const Note = model('Note', noteSchema);
 
