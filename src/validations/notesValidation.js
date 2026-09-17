@@ -6,7 +6,7 @@ import { TAGS } from "../constants/tags.js";
 
 const objectIdValidator = (value, helpers) => {
   if (!isValidObjectId(value)) {
-    return helpers.error('any invalid');
+    return helpers.error('any.invalid');
   }
   return value;
 };
@@ -48,6 +48,6 @@ export const updateNoteSchema = {
     content: Joi.string(). allow(''),
     tag: Joi.string().valid(...TAGS),
   }).min(1).messages({
-    'object.min': 'Додайте перевірку, що хоча б одне з полів "title", "content" або "tag" буде присутнім',
+    'object.min': 'At least one field ("title", "content" or "tag") must be provided for update',
   }),
 };
