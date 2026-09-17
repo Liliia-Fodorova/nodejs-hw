@@ -5,7 +5,10 @@ import { TAGS } from "../constants/tags.js";
 
 
 const objectIdValidator = (value, helpers) => {
-  return !isValidObjectId(value) ? helpers.messages('Invalid noteId format') : value;
+  if (!isValidObjectId(value)) {
+    return helpers.error('any invalid');
+  }
+  return value;
 };
 
 export const getAllNotesSchema = {
@@ -17,13 +20,6 @@ export const getAllNotesSchema = {
   }),
 };
 
-
-export const noteIdSchema = {
-  [Segments.PARAMS]: Joi.object({
-    noteId: Joi.string().custom(objectIdValidator).required(),
-  }),
-};
-
 export const createNoteSchema = {
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1).required(),
@@ -32,10 +28,20 @@ export const createNoteSchema = {
   }),
 };
 
+export const noteIdSchema = {
+  [Segments.PARAMS]: Joi.object({
+    noteId: Joi.string().custom(objectIdValidator).required().messages({
+      'any invalid': 'Invalid noteId format',
+    }),
+  }),
+};
+
 
 export const updateNoteSchema = {
  [Segments.PARAMS]: Joi.object({
-    noteId: Joi.string().custom(objectIdValidator).required(),
+    noteId: Joi.string().custom(objectIdValidator).required().messages({
+      'any invalid': 'Invalid noteId format',
+    }),
   }),
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1),
