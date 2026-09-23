@@ -1,39 +1,39 @@
-import { model, Schema } from "mongoose";
+import crypto from 'crypto';
+import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/time.js';
+import { Session } from '../models/session.js';
 
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      trim: true
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 8
-    },
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-   },
-);
+export const createSession = async (userId) => {
+  const accessToken = crypto.randomUUID();
+  const refreshToken = crypto.randomUUID();
 
-userSchema.pre('save', function () {
-  if (!this.username) {
-    this.username = this.email;
-  }
-});
-
-userSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  return obj;
+  return Session.create({
+    userId,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+  });
 };
 
-export const User = model('User', userSchema);
+export const setSessionCookies = (res, session) => {
+  res.cookie('accessToken', session.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: FIFTEEN_MINUTES,
+  });
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: ONE_DAY,
+  });
+
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: ONE_DAY,
+  });
+};
