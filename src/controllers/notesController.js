@@ -44,7 +44,7 @@ const [totalNotes, notes] = await Promise.all([
 
 export const getNoteById = async (req, res) => {
   const { noteId } = req.params;
-  const note = await Note.findById({
+  const note = await Note.findOne({
     _id: noteId,
     userId: req.user._id,
   });
