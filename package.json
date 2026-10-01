@@ -38,6 +38,7 @@
     "http-errors": "^2.0.1",
     "joi": "^18.2.8",
     "mongoose": "^9.9.5",
+    "nodemailer": "^10.0.13",
     "pino-http": "^11.0.0"
   }
 }
